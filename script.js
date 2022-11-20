@@ -1,47 +1,46 @@
-
-// COMPLETED the current day is displayed at the top of the calendar
-var today = dayjs().format('dddd MMM, YYYY')
-$('#currentDay').text("Today is " + today)
-
-//  get current time to note if past / present / future, and display date on header
-var timeH = dayjs().format('h');
-$('#hour').text(timeH);
+$(jQuery).ready(function () {
 
 
-
-// Var to append each time block in function for past / current / future
-var checkCurrentH = document.querySelectorAll("set");
-
-
+            // COMPLETED the current day is displayed at the top of the calendar
+            var today = dayjs().format('dddd MMM D, YYYY')
+            $('#currentDay').text("Today is " + today)
 
 
-// TODO Listener for click even on save button
+            // COMPLETED Listener for click event on save button
 
-function saveText(event) {
-    event.preventDefault();
+            $(".saveBtn").click(function () {
+                var parent = $(this).parents().eq(0)
+                var clickedHour = parent.attr('id')
 
-    var saveBtn = $(saveBtn)
+                clickedHour = clickedHour.slice(5)
+                var slicedHour = clickedHour.slice(0, -2)
 
-    saveBtn.on(click, function (event) {
-    event.target.parent.child[0].attr("hour-")
 
-    var activityInput = event.target.parent.children().val
+                var textDescription = parent.find(".description").val();
+
+                   // get current time to note if past / present / future
+
+                   var currentH = dayjs().format('HH');
+                   $('#hour').text(currentH);
+   
+                   $(".time-block").each(function () {
+                
+                       if (currentH === slicedHour) {
+                           $(this).addclass("present");
+                       } else if (currentH < slicedHour) {
+                           $(this).addclass("future");
+                       } else {
+                           $(this).addclass("past");
+                       }
+                   })
+
+                function saveText(event) {
+                    event.preventDefault();
+                }
+
+                // COMPLETED save to local storage
+                localStorage.setItem("textDescription", textDescription)
+
+            })
 
 })
-
-}
-// var saveText = document.querySelector("description").value
-
-    localStorage.setItem("description", saveText)
-
-
-
-
-// TODO each timeblock is color coded to indicate whether it is in the past, present, or future
-
-var hours = ["9", "10", "11", "12", "13", "14", "15", "16", "17"]
-
-for (var i = 0; i < 9; i++) {
-    if (timeH < hours[i])
-    $(textarea(i)).addclass(".past)")
-}
