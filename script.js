@@ -1,46 +1,51 @@
 $(jQuery).ready(function () {
 
 
-            // COMPLETED the current day is displayed at the top of the calendar
-            var today = dayjs().format('dddd MMM D, YYYY')
-            $('#currentDay').text("Today is " + today)
+    // COMPLETED the current day is displayed at the top of the calendar
+    var today = dayjs().format('dddd MMM D, YYYY')
+    $('#currentDay').text("Today is " + today)
 
 
-            // COMPLETED Listener for click event on save button
+    // COMPLETED Listener for click event on save button
 
-            $(".saveBtn").click(function () {
-                var parent = $(this).parents().eq(0)
-                var clickedHour = parent.attr('id')
+    $(".saveBtn").click(function () {
+        var parent = $(this).parents().eq(0)
+        var clickedHour = parent.attr('id')
 
-                clickedHour = clickedHour.slice(5)
-                var slicedHour = clickedHour.slice(0, -2)
+        clickedHour = clickedHour.slice(5)
+        var slicedHour = clickedHour.slice(0, -2)
 
 
-                var textDescription = parent.find(".description").val();
+        var textDescription = parent.find(".description").val();
 
-                   // get current time to note if past / present / future
+       function saveText() {
+            var saveText = localStorage.setItem("textDescription", textDescription)
+            saveText()
+        }
 
-                   var currentH = dayjs().format('HH');
-                   $('#hour').text(currentH);
-   
-                   $(".time-block").each(function () {
-                
-                       if (currentH === slicedHour) {
-                           $(this).addclass("present");
-                       } else if (currentH < slicedHour) {
-                           $(this).addclass("future");
-                       } else {
-                           $(this).addclass("past");
-                       }
-                   })
 
-                function saveText(event) {
-                    event.preventDefault();
-                }
+        // get current time to note if past / present / future
 
-                // COMPLETED save to local storage
-                localStorage.setItem("textDescription", textDescription)
+        var currentH = dayjs().hour();
+        $('#hour').text(currentH);
 
-            })
+        $(".time-block").each(function () {
+
+            var blockHour = parseInt($(this).attr('id').split('-')[1]);
+
+            if (currentH === blockHour) {
+                $(this).addClass("present");
+            } else if (currentH < blockHour) {
+                $(this).addClass("future");
+            } else {
+                $(this).addClass("past");
+            }
+        })
+
+
+
+
+
+    })
 
 })
